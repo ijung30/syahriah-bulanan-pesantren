@@ -63,49 +63,111 @@ if (isset($_GET['deleteId'])) {
 $query = "SELECT * FROM santri";
 $result = mysqli_query($koneksi, $query);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Santri</title>
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 </head>
-<body>
-<div class="container mt-4">
-    <h1>Data Santri</h1>
-    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addModal">Tambah Santri</button>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Nis</th>
-            <th>Nama</th>
-            <th>Kelas</th>
-            <th>Alamat</th>
-            <th>Aksi</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr>";
-            echo "<td>{$row['nis']}</td>";
-            echo "<td>{$row['nama']}</td>";
-            echo "<td>{$row['kelas']}</td>";
-            echo "<td>{$row['alamat']}</td>";
-            echo "<td>
-                    <button class='btn btn-success btn-sm' data-toggle='modal' data-target='#editModal' 
-                           data-nis='{$row['nis']}' data-nama='{$row['nama']}' data-kelas='{$row['kelas']}' data-alamat='{$row['alamat']}'>
-                        Edit
-                    </button>
-                    <a href='data_santri.php?deleteId={$row['nis']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Apakah kamu yakin ingin menghapus data siswa?\");'>Hapus</a>
-                  </td>";
-            echo "</tr>";
-        }
-        ?>
-        </tbody>
-    </table>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Sidebar -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="#" class="brand-link">
+            <img src="image/alfalah.jpg" alt="Logo alfalah" class="brand-image img-circle elevation-3">
+            <span class="brand-text font-weight-light">SYAHRIAH BULANAN</span>
+        </a>
+        <div class="sidebar">
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                    <li class="nav-item">
+                        <a href="dashboard.php" class="nav-link">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="data_santri.php" class="nav-link active">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Data Santri</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="pembayaran.php" class="nav-link">
+                            <i class="nav-icon fas fa-credit-card"></i>
+                            <p>Pembayaran</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="laporan.php" class="nav-link">
+                            <i class="nav-icon fas fa-file-alt"></i>
+                            <p>Laporan</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="logout.php" class="nav-link" onclick="return confirm('Apakah Anda yakin ingin logout?');">
+                            <i class="nav-icon fas fa-sign-out-alt"></i>
+                            <p>Logout</p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <div class="container mt-4">
+            <h1>Data Santri</h1>
+            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addModal">Tambah Santri</button>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Nis</th>
+                    <th>Nama</th>
+                    <th>Kelas</th>
+                    <th>Alamat</th>
+                    <th>Aksi</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                    <tr>
+                        <td><?= $row['nis'] ?></td>
+                        <td><?= $row['nama'] ?></td>
+                        <td><?= $row['kelas'] ?></td>
+                        <td><?= $row['alamat'] ?></td>
+                        <td>
+                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#editModal"
+                                    data-nis="<?= $row['nis'] ?>" data-nama="<?= $row['nama'] ?>"
+                                    data-kelas="<?= $row['kelas'] ?>" data-alamat="<?= $row['alamat'] ?>">
+                                Edit
+                            </button>
+                            <a href="data_santri.php?deleteId=<?= $row['nis'] ?>"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Apakah Anda yakin ingin menghapus data santri ini?');">Hapus</a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <!-- Modal Tambah Santri -->
@@ -114,7 +176,7 @@ $result = mysqli_query($koneksi, $query);
         <div class="modal-content">
             <form method="POST" action="data_santri.php">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addModalLabel">Tambah Santri</h5>
+                    <h5 class="modal-title">Tambah Santri</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -149,7 +211,7 @@ $result = mysqli_query($koneksi, $query);
         <div class="modal-content">
             <form method="POST" action="data_santri.php">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Santri</h5>
+                    <h5 class="modal-title">Edit Santri</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -175,19 +237,18 @@ $result = mysqli_query($koneksi, $query);
     </div>
 </div>
 
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 <script>
     // Pass data to Edit Modal
     $('#editModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var nis = button.data('nis'); // Get data from the data-nis attribute
-        var nama = button.data('nama'); // Get data from the data-nama attribute
-        var kelas = button.data('kelas'); // Get data from the data-kelas attribute
-        var alamat = button.data('alamat'); // Get data from the data-alamat attribute
-
-        // Populate modal fields with the retrieved data
+        var button = $(event.relatedTarget);
+        var nis = button.data('nis');
+        var nama = button.data('nama');
+        var kelas = button.data('kelas');
+        var alamat = button.data('alamat');
         var modal = $(this);
         modal.find('#editNis').val(nis);
         modal.find('#editNama').val(nama);
@@ -195,6 +256,5 @@ $result = mysqli_query($koneksi, $query);
         modal.find('#editAlamat').val(alamat);
     });
 </script>
-
 </body>
 </html>

@@ -1,3 +1,29 @@
+<?php
+session_start();
+include 'koneksi.php'; // Pastikan file koneksi database sudah benar
+
+$error_message = ''; // Variabel untuk pesan error
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Ambil input username dan password dari form
+    $username = mysqli_real_escape_string($koneksi, $_POST['username']);
+    $password = mysqli_real_escape_string($koneksi, $_POST['password']);
+}
+
+    // Query untuk memeriksa kombinasi username dan password
+    $query = "SELECT * FROM admin WHERE username = '$username' AND password = '$password'";
+    $result = mysqli_query($koneksi, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        $_SESSION['username'] = $username; // Simpan username dalam sesi
+    header("Location: dashboard.php"); // Arahkan ke dashboard jika login berhasil
+        exit();
+    } else {
+        $error_message = "Username atau password salah!"; // Pesan kesalahan login
+
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,6 +88,10 @@
         button:hover {
             background-color: #006269;
         }
+        .error {
+            color: red;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -72,11 +102,14 @@
         <img src="image/alfalah.jpg" alt="PEMBAYARAN SYAHRIAH BULANAN" style="width: 130px; margin-bottom: 1rem;">
 
         <h2>Silahkan Masuk</h2>
-        <form action="dashboard.html" method="post">
-            <input type="text" name="089673310014" placeholder="Username" required>
-            <input type="password" name="bismillah bisa" placeholder="Password" required>
+        <form action="" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
+        <?php if (!empty($error_message)) { ?>
+            <div class="error"><?= $error_message ?></div>
+        <?php } ?>
     </div>
 </body>
 </html>

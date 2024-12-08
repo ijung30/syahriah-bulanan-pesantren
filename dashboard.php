@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("location: login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,32 +18,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Ensure the cards take up the same width as the chart */
-        .small-box {
-            min-height: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .small-box-footer {
-            padding: 10px;
-        }
-        .row {
-            display: flex;
-            flex-wrap: wrap;  /* Allows the cards to wrap on smaller screens */
-            gap: 10px;
-            justify-content: space-between;
-        }
-        .col-lg-4, .col-md-4 {
-            flex: 1;
-            min-width: 30%; /* Each card takes up 1/3 of the width */
-            max-width: 33%; /* Ensures 3 cards per row */
-        }
-        .col-lg-12 {
-            flex: 1;
-            width: 100%;
-        }
-    </style>
+    /* Ensure the cards take up the same width as the chart */
+    .small-box {
+        min-height: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .small-box-footer {
+        padding: 10px;
+        color: white !important; /* Force the text color to white */
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;  /* Allows the cards to wrap on smaller screens */
+        gap: 10px;
+        justify-content: space-between;
+    }
+
+    .col-lg-4, .col-md-4 {
+        flex: 1;
+        min-width: 30%; /* Each card takes up 1/3 of the width */
+        max-width: 33%; /* Ensures 3 cards per row */
+    }
+
+    .col-lg-12 {
+        flex: 1;
+        width: 100%;
+    }
+
+    /* Specifically target the 'Laporan' card footer text to make it white */
+    .small-box.bg-warning .small-box-footer {
+        color: white !important; /* Ensure the footer text in Laporan card is white */
+    }
+</style>
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -50,14 +69,14 @@
     <!-- Sidebar -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="#" class="brand-link">
-            <img src="image/alfalah.jpg" alt="Logo TPQ" class="brand-image img-circle elevation-3" style="opacity: .8;">
+            <img src="image/alfalah.jpg" alt="Logo alfalah" class="brand-image img-circle elevation-3" style="opacity: .8;">
             <span class="brand-text font-weight-light">SYAHRIAH BULANAN</span>
         </a>
         <div class="sidebar">
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                     <li class="nav-item">
-                        <a href="dashboard.html" class="nav-link">
+                        <a href="dashboard.php" class="nav-link active">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Dashboard</p>
                         </a>
